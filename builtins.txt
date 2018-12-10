@@ -1,0 +1,80 @@
+#Defintiion of the number 0
+let 0 = (\f x. x);
+
+let id = (\x.x); #id(val) = val  #Returns the value given
+
+#Will return the successor of a number (n + 1)
+let succ = (\n f x. f (n f x));
+
+#Returns the predecessor of a number (n - 1, unless n = 0)
+let pred  = (\n. car (n (\p. cons (cdr p) (succ (cdr p))) (cons 0 0)));
+
+#All of the numbers from 1 to 10
+let 1 = succ 0;
+let 2 = succ 1;
+let 3 = succ 2;
+let 4 = succ 3;
+let 5 = succ 4;
+let 6 = succ 5;
+let 7 = succ 6;
+let 8 = succ 7;
+let 9 = succ 8;
+let 10 = succ 9;
+
+#Booleans True and False, pick between 1 of two given values
+let true = (\x y. x);
+let false = (\x . (\y. y));
+
+#Returns the opposite boolean value
+let not = (\x. x false true);
+let or = (\x y.x true y); #returns true if either x or y is true
+let and = (\x y.x y false); #returns true only if x and y are true
+let xor = (\x y.x (not y) y); #Returns true if one of the values is true
+
+#Returns true if the given number is 0
+let zero? = (\n. n (\x. false) true);
+
+#Returns true if the given number ISN'T 0
+let not-zero? = (\n. not (zero? n));
+
+#Returns true if N <= M
+let leq = (\n m. zero? (sub n m));
+
+#Returns true if N > M
+let gre = (\n m. not (leq n m));
+
+#Returns true if N < M
+let les = (\n m. gre m n);
+
+#Returns true if N == M
+let equ = (\n m. and (not (gre n m)) (not (les n m)));
+
+#Returns true if N >= M
+let geq = (\n m. or (gre n m) (equ n m));
+
+#The if statement does the same thing as identity
+let if = (\predicate then else. predicate then else);
+
+#Cons puts two values in a list (cons 1 2 == [1,2])
+let cons = (\b c a.a b c);
+
+#Takes the first value of a list (car (cons 1 2) == 1)
+let car = (\l.l (\x y.x));
+
+#Returns the last / rest of the list
+let cdr = (\l.l (\x y.y));
+
+#Adds two numbers (defined above)
+let add = (\f n m. cdr (n f (m f (cons 0 0)))) (\p.cons (cdr p) (succ (cdr p)));
+
+#Subtracts two numbers
+let sub = (\n m. m pred n);
+
+#Multiplies two numbers (defined above)
+let mul = (\n m. n (add m) 0);
+
+#Composes two functions
+let compose = (\f g x. f (g x));
+
+#The Y combinator for recursion
+let Y = (\f. (\x. f (x x)) (\x. f (x x)));

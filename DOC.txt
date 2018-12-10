@@ -1,0 +1,199 @@
+LAMBDA CALCULUS DOCUMENTATION
+==============================
+This documentation covers all the Syntax, as well
+as how the Lambda Calculus is interpreted in the
+repl.py program. This will help guide you into
+being able to utilize the Lambda Calculus.
+
+CONSTRUCTS
+===========
+Besides the builtin function type and name type,
+the only other 'construct' (form) is the variable
+declaration construct. This allows the user to make
+variables to contain the result of a computation,
+as well as to contain functions so the user doesn't
+have to write out that function OVER AND OVER AGAIN.
+
+A variable declaration takes this form:
+
+let <NAME> = <VALUE / EXPRESSION> ;
+
+Well.. what is this NAME thingy? Well, this simply would
+be the name of your variable. A variable name in the lambda
+calculus can contain all of the following characters:
+-  A-Z (upper and lowercase alphabet)
+-  0-9 (digits)
+-  &
+-  !
+-  ?
+-  +
+-  -
+-  *
+-  /
+-  |
+-  _
+
+So any variable name can contain those characters in any
+arrangement. Now, what is this other thing? The weird
+<VALUE / EXPRESSION>? Well this states that the value
+that this variable can be set to is the value contained
+in another name, or a function / expression.
+
+PLEASE NOTE:
+       All statements in the lambda calculus end with
+a semicolon ';'. Please keep this in mind whilst programming.
+
+
+VALUES
+==========
+Now would be a good time to talk about values in the
+Lambda Calculus. Because, if we don't have values,
+how might we build up expressions and preform computations?
+
+Technically, there is only ONE type of value in the lambda
+calculus, which is a function. But, since raw variable names
+can be manipulated (even if those names have not been bound
+to a value), one could say there are two:
+
+- Names
+- Functions
+
+If you need help on what a name is- refer above to the
+variable declaration section. But what of this 'function'
+thing that I mentioned? What exactly is it? Well, to explain
+them, we'll take a slight detour towards Algebra.
+
+Here is an example function in Algebra:
+ f(x) = x + 1
+
+Now, we can use this function, and 'plug in' values to get
+various results. In a Algrebraic function, the name 'x'
+between those parenthesis (in 'f(x)') is called a variable.
+(Note how the variable 'x' is also on the other side of the
+equals sign.) If we wanted to 'plug in' a value into this
+function to preform a computation, you must substitute the
+variable 'x' on both sides of the equal sign for whatever
+value you want to use.
+
+Example:
+ f(x) = x + 1    (I want to plug in '2')
+ f(2) = 2 + 1    (Substitute all 'x's for the number 2)
+ 2 + 1           (Use the expression as what our result will be)
+ 3               (Evaluate expression to get result)
+
+ Therefore: f(2) = 3
+
+Now, to make the conversion between algebraic functions to
+Lambda functions, lets use the Identity function in Algebra
+to give us a nice example.
+
+f(x) = x          <- This is the identity function
+
+Any value that we 'plug into' this function- we'll get
+right back. (This is the same as the y = x line.) In
+the lambda calculus the function would look like so:
+
+(\x.x)    <- The identity function in Lambda Calculus
+
+Now, before we talk about how you would plug a value into
+this lambda function, I need to talk about the structure
+of the lambda functions.
+
+    (\   x   .   x   )
+    ^    ^   ^-- Seperator
+    |    |_ variable
+    |_ Function definition
+
+
+Here's a small diagram of some of the components of a lambda
+function, now, there are two main components that are very
+important.
+
+        (\x   .   x)
+	 ____   ____
+	  |       \---- Body
+	  |
+	  \-- Head
+
+The seperator (the period) seperates the two main parts of
+a lambda function, those parts being the head and the body.
+The HEAD specifies all of the variables that this function will
+need to take in to preform it's computation.
+The BODY is an expression which will use (potentially) the values
+that will be substituted for those variables that are defined
+in the head of the function.
+
+In Algebraic functions, when 'plugging in' a value, we would
+have the name of the function, and in parenthesis the value
+that we'd substitute for the given variable (think of f(3)).
+In the lambda calculus however, any values that you will plug in
+to the function, will be directly to the right of the function.
+
+Using our example of the identity function with 3:
+ f(3)            <- Algebraic way of doing it
+ (\x.x) 3        <- Lambda calculus way of doing it
+
+Both of these forms describe the same thing.
+But, since in the Algebraic way- we'd just substitute 3 (in this
+case) for x.. do we do just that with Lambda Calculus?
+The answer is YES. But you have to take a few steps to do it.
+
+Let us real quick show how we'd find f(3) real fast in Algebra:
+ f(x) = x           <- Our function we start with
+ f(3) = 3           <- Substitute 3 for x
+ 3                  <- Take right side of equals sign as our expression
+ 3                  <- Evaluate it, and we're done!
+
+
+Now, lets show how we'd do the same thing in Lambda Calculus:
+ (\x.x) 3          <- The function we start with, and value we want to use
+ (\3.3)            <- Subsitute 3 for x in the head and body
+ (\3. 3 )          <- Remove the head, seperator and closing parenthesis
+ 3                 <- Take the remaining value from the body
+ 3                 <- Evaluate the expression (the previous body), now we're done!
+
+
+Now, thats all well and good but that hardly seems useful. And I STILL don't
+actually know the rules to evaluating a 'program' written in lambda calculus.
+Well buddy, let me tell you the rules:
+
+1) If the left-most value is not a function, stop.
+2) If there isn't a value directly to the right of the left-most function, stop.
+3) If there is a value to the right of the left-most function, take that value as input.
+
+
+Now that's all well and good but let's go through some examples!
+
+
+Example 1:
+(\x.x) (\x.x) 3    <- Our expression that we want to evaluate
+(\ (\x.x) . (\x.x) ) 3  <- Substitue function to the right as x
+(\x.x) 3          <- Remove head and seperator, leaving a function in it's place
+(\ 3 . 3 )        <- Substitue value to the right of the function (3) as x
+3                <- Remove head and seperator, leaving that function's body (3)
+3               <- Evaluate 3 and gets the result (3)
+
+
+Example 2:
+(\x.x x x) y  <- Our expression that we want to evaluate
+(\ y . y y y )  <- Substitute y for x
+y y y          <- Remove head and body, leaving just 'y y y'
+y y y          <- Try evaluating this expression, we're done
+
+
+FINAL NOTES:
+=============
+Functions can take multiple arguments (and even 0 arguments).
+If a function takes multiple arguments it will try to get each one
+sequencially (and substitutes sequencially).
+
+You can load a file called 'builtins.txt' which contains a lot
+of functions so that it is a little easier to program in the lambda
+calculus. Please refer to the builtins.txt file to see all of those
+functions.
+
+Some of the builtin functions in that file are as follows:
+- Comparison operators
+- Math operators (simple ones)
+- Logical operators
+- List related operators

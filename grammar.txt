@@ -1,0 +1,25 @@
+#This is the grammar of the lambda calculus
+
+statement_list : statement | statement statement_list
+
+#A statement is one of these three things, followed by a semicolon
+statement : (function_application
+	  | assignment
+	  | none
+	  ) ';'
+
+#Literally nothing
+none :
+
+assignment : NAME '=' function_application
+
+#The application of a function is either 1 or more functions (or names) next to each other
+function_application : (NAME
+		     | function_definition
+		     | LPAREN function_application RPAREN)+
+
+#A function definition is a lambda, a list of arguments, and a function application
+function_definition : '(\' arg_list '.' function_application ')'
+
+#An arg list is a bunch of names
+arg_list : (NAME)+

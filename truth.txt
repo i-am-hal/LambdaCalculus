@@ -1,0 +1,12 @@
+#A function that acts like a truth machine
+# (for this to run, you'll need to load the builtins.txt
+# file so we can use some functions)
+
+#In debug mode (when on) it will show this function call and
+# it will slowly acrew an infinite sea of a particular value
+let repeat = (\val. (\x.x x val) (\x.x x val));
+
+#(Only really works when debug mode is on)
+#When the function is given 0, it returns 0,
+# otherwise it gives back a sea of 1s
+let truth = (\n.(zero? n) 0 (\.repeat 1));
